@@ -1,0 +1,78 @@
+//题目描述：找出一个字符串中另一个字符串的所有字符
+
+//方法一：使用string容器的方法来简单实现
+#if 0
+int main()
+{
+	char buf[1024];
+	cin.getline(buf, 1023);
+	string src = buf;
+	cin.getline(buf, 1023);
+	string dsc = buf;
+
+	for (int i = 0; i < dsc.size(); ++i)
+	{
+		char c = dsc[i];
+		while (src.find(c) != string::npos)
+		{
+			src.erase(src.begin() + src.find(c));
+		}
+	}
+	cout << src;
+	return 0;
+}
+#endif
+
+
+//方法二：利用哈希思想
+//字符共有256个，将第二个字符串的所有字符在一个数组arr中标记为1，不存在的字符标记为0，
+//利用快慢指针便利第一个字符串，如果*fast在arr中不存在，也就是说不在第二个字符串中的字符，就覆盖*slow，如果存在fast向后移动。
+#include<iostream>
+#include<string>
+using namespace std;
+
+void fun(char* _s1, char* _s2)
+{
+	if (_s1 == nullptr)
+		return;
+	if (_s1 != nullptr && _s2 == nullptr)
+		return;
+	int arr[256] = { 0 };
+	char* cur = _s2;
+	char* fast = _s1;
+	char* slow = _s1;
+	//设置哈希表
+	while (*cur != '\0')
+	{
+		arr[*(cur++)] = 1;
+	}
+	while (*fast != '\0')
+	{
+		//保留不用删除的字符
+		if (arr[*fast] != 1)
+		{
+			*slow = *fast;
+			fast++;
+			slow++;
+		}
+		//删除
+		else
+		{
+			fast++;
+		}
+	}
+	*slow = '\0';
+	return;
+}
+
+int main()
+{
+	char s1[256] = { 0 };
+	char s2[256] = { 0 };
+	
+	cin.getline(s1, 256);
+	cin.getline(s2, 256);
+     fun(s1, s2);
+	cout << s1 << endl;
+	return 0;
+}
