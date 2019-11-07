@@ -1,0 +1,41 @@
+//输入一个字符串，不超过255。找出最长数字子序列，输出。
+
+//利用三个string，str1表示接收的字符串，str2暂时存储数字串
+//遍历str1，每次读到数字串时候，将数字串存储到str2中
+//对比str2 和 nstr，如果str2中的数字串比nstr中的数字串长就将nstr内容改成str2
+//如果str2中的数字串比nstr中的数字串少，清空str2继续向后遍历str1
+
+#include<iostream>
+#include<string>
+using namespace std;
+
+int main()
+{
+	string str1, str2, nstr;
+	getline(cin, str1);
+	//必须<=因为最长数字串可能在末尾
+	for (int i = 0; i <= str1.size(); i++)
+	{
+		if (str1[i] >= '0' && str1[i] <= '9')
+		{
+			str2 += str1[i];
+		}
+		else
+		{
+			if (str2.size() > nstr.size())
+			{
+				nstr = str2;
+				str2.clear();
+			}
+			else
+			{
+				str2.clear();
+			}
+		}
+	}
+	if (nstr.empty())
+		return 0;
+	cout << nstr << endl;
+	return 0;
+}
+
